@@ -28,7 +28,7 @@ dnf install mongodb-org -y &>> $LOGFILE
 VALIDATE $? "Installing MongoDB"
 systemctl enable mongod &>> $LOGFILE
 VALIDATE $? "Enabling MongoDB"
-systemctl start mongod &>> $LOGFILE2
+systemctl start mongod &>> $LOGFILE
 VALIDATE $? "Starting MongoDB"
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongodb.conf &>> $LOGFILE 
 VALIDATE $? "Editing access to mongoDB"
