@@ -41,7 +41,7 @@ then
   VALIDATE $? "Creating App Directory"
 
 curl -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip &>> $LOGFILE
-VALIDATE $? ""
+VALIDATE $? "copying payment service"
 
 cd /app &>> $LOGFILE
 
