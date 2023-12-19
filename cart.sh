@@ -4,9 +4,10 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
+
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
-MONGODB_HOST=monfodb.mohana.cloud 
+
 echo "script started executing at $TIMESTAMP" &>> $LOGFILE
 VALIDATE(){
     if [ $1 -ne 0 ]
@@ -47,37 +48,28 @@ then
   
   VALIDATE $? "Creating App Directory"
 
-  curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip 
-  VALIDATE $? "Dowloading Catalogue application" 
+  curl -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip 
+  VALIDATE $? "Dowloading Cart application" 
   cd /app 
-  unzip -o /tmp/catalogue.zip &>> $LOGFILE 
-  VALIDATE $? "Unzipping catalogue Files" 
+  unzip -o /tmp/cart.zip &>> $LOGFILE 
+  VALIDATE $? "Unzipping cart Files" 
 
 npm install &>> $LOGFILE 
 VALIDATE $? "Installing dependencies"
 
-cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service
-VALIDATE $? "Copying catalogue service file"
+cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service
+VALIDATE $? "Copying cart service file"
 
  systemctl daemon-reload &>> $LOGFILE
  VALIDATE $? "Demon Loading"
 
- systemctl enable catalogue &>> $LOGFILE
- VALIDATE $? "Enabling Catalogue"
+ systemctl enable cart &>> $LOGFILE
+ VALIDATE $? "Enabling Cart"
 
- systemctl start catalogue &>> $LOGFILE
- VALIDATE $? "Start Catalogue"
+ systemctl start cart &>> $LOGFILE
+ VALIDATE $? "Start Cart"
 
- cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
- VALIDATE $? "Copying MongoDB Repo"
-
- dnf install mongodb-org-shell -y &>> $LOGFILE
-VALIDATE $? "Installing MongoDB client"
-
-mongo --host $MONGODB_HOST </app/schema/catalogue.js &>> $LOGFILE 
-VALIDATE $? "Loading Catalogue data into MongoDB"
-
-
+ 
 
 
 

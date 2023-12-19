@@ -6,7 +6,7 @@ Y="\e[33m"
 N="\e[0m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
-MONGODB_HOST=monfodb.mohana.cloud 
+MONGODB_HOST=mongodb.mohana.cloud 
 echo "script started executing at $TIMESTAMP" &>> $LOGFILE
 VALIDATE(){
     if [ $1 -ne 0 ]
@@ -47,37 +47,34 @@ then
   
   VALIDATE $? "Creating App Directory"
 
-  curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip 
-  VALIDATE $? "Dowloading Catalogue application" 
+  curl  -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip &>> $LOGFILE
+  VALIDATE $? "Downloading user application"
+
   cd /app 
-  unzip -o /tmp/catalogue.zip &>> $LOGFILE 
-  VALIDATE $? "Unzipping catalogue Files" 
+  
+  unzip /tmp/user.zip &>> $LOGFILE
+  VALIDATE $? "Unzipping"
 
-npm install &>> $LOGFILE 
-VALIDATE $? "Installing dependencies"
+  npm install &>> $LOGFILE
+  VALIDATE $? "Installing dependencies"
 
-cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service
-VALIDATE $? "Copying catalogue service file"
+  cp /home/centos/roboshop-shell/suer.service /etc/systemd/system/user.service  &>> $LOGFILE
+  VALIDATE $? "Copying user service file"
 
  systemctl daemon-reload &>> $LOGFILE
  VALIDATE $? "Demon Loading"
 
- systemctl enable catalogue &>> $LOGFILE
- VALIDATE $? "Enabling Catalogue"
+ systemctl enable user &>> $LOGFILE
+ VALIDATE $? "Enabling user"
 
- systemctl start catalogue &>> $LOGFILE
- VALIDATE $? "Start Catalogue"
+ systemctl start user &>> $LOGFILE
+ VALIDATE $? "Start user"
 
- cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
- VALIDATE $? "Copying MongoDB Repo"
+ cp /home/centos/roboshop-shell/mango.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE 
+ VALIDATE $? "Copying mongodb repo"
 
- dnf install mongodb-org-shell -y &>> $LOGFILE
-VALIDATE $? "Installing MongoDB client"
+ dnf install mongodb-org-shell -y 
+ VALIDATE $? "Installing MongoDB client"
 
-mongo --host $MONGODB_HOST </app/schema/catalogue.js &>> $LOGFILE 
-VALIDATE $? "Loading Catalogue data into MongoDB"
-
-
-
-
-
+mongo --host MONGODB-SERVER-IPADDRESS </app/schema/user.js &>> $LOGFILE 
+VALIDATE $? "Loading user data into MongoDB"
