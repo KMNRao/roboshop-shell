@@ -40,7 +40,7 @@ then
  curl  -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip &>> $LOGFILE
 
  cd /app
-
+  VALIDATE $? "Moving App directory"
  unzip -o /tmp/shipping.zip
  VALIDATE $? "Unziping shipping"
  mv target/shipping-1.0.jar shipping.jar
