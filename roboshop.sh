@@ -1,10 +1,10 @@
 #!/bin/bash
 
-AMI=
-SG_ID=
+AMI=ami-03265a0778a880afb
+SG_ID=sg-059529b0d5245ccf4
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "web" "shipping" "payment" "dispatch")
 
-for i in "${INSTANCES[@b]}"
+for i in "${INSTANCES[@]}"
 do
     echo "instance is: $i"
     if [ $i == "mangodb" ] || [ $i == "mysql" ] || [ $i == "shipping" ]
