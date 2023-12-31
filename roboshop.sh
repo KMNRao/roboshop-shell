@@ -19,24 +19,24 @@ do
     echo "$i: $IP_ADDRESS"
 
     #create R53 record, make sure you delete existing record
-    aws route53 change-resource-record-sets \
-    --hosted-zone-id $ZONE_ID \
-    --change-batch '
-    {
-        "Comment": "Creating a record set for cognito endpoint"
-        ,"Changes": [{
-        "Action"              : "UPSERT"
-        ,"ResourceRecordSet"  : {
-            "Name"              : "'$i'.'$DOMAIN_NAME'"
-            ,"Type"             : "A"
-            ,"TTL"              : 1
-            ,"ResourceRecords"  : [{
-                "Value"         : "'$IP_ADDRESS'"
-            }]
-        }
-        }]
-    }
-        '
+    # aws route53 change-resource-record-sets \
+    # --hosted-zone-id $ZONE_ID \
+    # --change-batch '
+    # {
+    #     "Comment": "Creating a record set for cognito endpoint"
+    #     ,"Changes": [{
+    #     "Action"              : "UPSERT"
+    #     ,"ResourceRecordSet"  : {
+    #         "Name"              : "'$i'.'$DOMAIN_NAME'"
+    #         ,"Type"             : "A"
+    #         ,"TTL"              : 1
+    #         ,"ResourceRecords"  : [{
+    #             "Value"         : "'$IP_ADDRESS'"
+    #         }]
+    #     }
+    #     }]
+    # }
+    #     '
 done
 #done
     #IP_ADDRESS=$(aws ec2 run-instances --image-id ami-03265a0778a880afb --instance-type $INSTANCE_TYPE --security-group-ids sg-059529b0d5245ccf4 
